@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#111827" />
+  <title>TaskFlow — Project Workspace</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#"><span class="brand-mark">T</span><span>taskflow<span class="brand-dot">.</span></span></a>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="nav">
+        <button class="nav-item active" data-view="overview"><span>▦</span> Overview</button>
+        <button class="nav-item" data-view="tasks"><span>✓</span> My tasks</button>
+        <button class="nav-item" data-view="projects"><span>▣</span> Projects</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card"><div class="help-icon">✦</div><strong>Make progress,</strong><p>one task at a time.</p><span>You've got this!</span></div>
+        <div class="profile"><div class="avatar">G</div><div><strong>My Workspace</strong><small>Personal account</small></div><span class="more">···</span></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+        <div class="crumb">Workspace <span>/</span> <b id="pageCrumb">Overview</b></div>
+        <div class="top-actions"><span class="today" id="todayLabel"></span><div class="avatar small">G</div></div>
+      </header>
+
+      <section class="content">
+        <div class="welcome-row">
+          <div><div class="eyebrow">YOUR WORKSPACE</div><h1 id="pageTitle">Good morning, Gohar <span>✦</span></h1><p class="subtitle">A little progress every day adds up. Here's your overview.</p></div>
+          <button class="primary-btn" id="addTaskTop"><span>＋</span> Add a task</button>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-top"><span>Total tasks</span><span class="stat-icon lavender">▤</span></div><strong id="totalCount">0</strong><small>Across your workspace</small></article>
+          <article class="stat-card"><div class="stat-top"><span>In progress</span><span class="stat-icon blue">◷</span></div><strong id="progressCount">0</strong><small>Currently being worked on</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Completed</span><span class="stat-icon green">✓</span></div><strong id="doneCount">0</strong><small>Tasks finished</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Completion rate</span><span class="stat-icon peach">↗</span></div><strong id="rateCount">0%</strong><small>Your overall progress</small></article>
+        </div>
+
+        <div class="section-grid">
+          <section class="panel task-panel">
+            <div class="panel-heading"><div><h2>Recent tasks</h2><p>Keep your priorities moving</p></div><button class="text-btn" id="viewAll">View all →</button></div>
+            <div class="filter-row"><div class="search-wrap"><span>⌕</span><input id="searchInput" type="search" placeholder="Search tasks..." /></div><select id="statusFilter" aria-label="Filter by status"><option value="all">All statuses</option><option value="todo">To do</option><option value="progress">In progress</option><option value="done">Completed</option></select></div>
+            <div id="taskList" class="task-list"></div>
+          </section>
+
+          <section class="panel project-panel">
+            <div class="panel-heading"><div><h2>Your projects</h2><p>What you're working on</p></div><button class="icon-btn" id="addProject" title="Add project">＋</button></div>
+            <div id="projectList" class="project-list"></div>
+            <div class="tip-box"><span>✦</span><div><strong>Small steps count</strong><p>Break big goals into manageable tasks and celebrate every win.</p></div></div>
+          </section>
+        </div>
+        <footer>Made with focus <span>♥</span> · TaskFlow © 2026</footer>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="taskModal" aria-hidden="true">
+    <form class="modal" id="taskForm">
+      <div class="modal-head"><div><div class="eyebrow">WORKSPACE</div><h2 id="modalTitle">Create a task</h2></div><button type="button" class="close-btn" data-close="taskModal">×</button></div>
+      <label>Task title<input id="taskTitle" required maxlength="70" placeholder="e.g. Prepare project presentation" /></label>
+      <label>Project<select id="taskProject"></select></label>
+      <div class="form-row"><label>Due date<input id="taskDate" type="date" /></label><label>Priority<select id="taskPriority"><option value="Medium">Medium</option><option value="High">High</option><option value="Low">Low</option></select></label></div>
+      <label>Status<select id="taskStatus"><option value="todo">To do</option><option value="progress">In progress</option><option value="done">Completed</option></select></label>
+      <div class="modal-actions"><button type="button" class="secondary-btn" data-close="taskModal">Cancel</button><button class="primary-btn" type="submit">Save task</button></div>
+    </form>
+  </div>
+
+  <div class="modal-backdrop" id="projectModal" aria-hidden="true">
+    <form class="modal compact-modal" id="projectForm">
+      <div class="modal-head"><div><div class="eyebrow">WORKSPACE</div><h2>New project</h2></div><button type="button" class="close-btn" data-close="projectModal">×</button></div>
+      <label>Project name<input id="projectName" required maxlength="45" placeholder="e.g. Website redesign" /></label>
+      <label>Project description<input id="projectDesc" maxlength="90" placeholder="What is this project about?" /></label>
+      <div class="modal-actions"><button type="button" class="secondary-btn" data-close="projectModal">Cancel</button><button class="primary-btn" type="submit">Create project</button></div>
+    </form>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
